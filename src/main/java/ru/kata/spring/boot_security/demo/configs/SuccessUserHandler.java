@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.configs;
 
+//import jakarta.servlet.ServletException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -22,4 +23,14 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
             httpServletResponse.sendRedirect("/");
         }
     }
+
+//    @Override
+//    public void onAuthenticationSuccess(jakarta.servlet.http.HttpServletRequest httpServletRequest, jakarta.servlet.http.HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+//        Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+//        if (roles.contains("ROLE_USER")) {
+//            httpServletResponse.sendRedirect("/user");
+//        } else {
+//            httpServletResponse.sendRedirect("/");
+//        }
+//    }
 }
