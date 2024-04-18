@@ -6,7 +6,7 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.core.env.Environment;
 //import org.springframework.stereotype.Repository;
-//import ru.kata.spring.boot_security.model.User;
+//import ru.kata.spring.boot_security.models.User;
 //
 //import java.util.List;
 //

@@ -4,7 +4,7 @@
 //import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.*;
-//import ru.kata.spring.boot_security.model.User;
+//import ru.kata.spring.boot_security.models.User;
 //import ru.kata.spring.boot_security.service.UserService;
 //
 //
@@ -25,8 +25,8 @@
 //    }
 //
 //    @GetMapping("/users")
-//    public String getUsersFromBD(Model model) {
-//        model.addAttribute("users", userService.getUsers());
+//    public String getUsersFromBD(Model models) {
+//        models.addAttribute("users", userService.getUsers());
 //        return "users/users";
 //    }
 //
@@ -36,8 +36,8 @@
 //    }
 //
 //    @PostMapping("/users/edit")
-//    public String editUser(@RequestParam("id") long id, Model model) {
-//        model.addAttribute("user", userService.getUserById(id));
+//    public String editUser(@RequestParam("id") long id, Model models) {
+//        models.addAttribute("user", userService.getUserById(id));
 //        return "users/editOrNew";
 //    }
 //

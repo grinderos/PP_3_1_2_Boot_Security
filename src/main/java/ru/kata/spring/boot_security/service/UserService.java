@@ -1,7 +1,7 @@
 //package ru.kata.spring.boot_security.service;
 //
 //
-//import ru.kata.spring.boot_security.model.User;
+//import ru.kata.spring.boot_security.models.User;
 //
 //import java.util.List;
 //

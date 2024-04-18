@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.configs;
+package ru.kata.spring.demo.configs;
 
 //import jakarta.servlet.ServletException;
 import org.springframework.security.core.Authentication;

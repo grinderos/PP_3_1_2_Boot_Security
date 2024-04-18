@@ -4,7 +4,7 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
 //import ru.kata.spring.boot_security.dao.UserDao;
-//import ru.kata.spring.boot_security.model.User;
+//import ru.kata.spring.boot_security.models.User;
 //
 //import java.util.List;
 //

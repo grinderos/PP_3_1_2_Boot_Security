@@ -1,4 +1,4 @@
-//package ru.kata.spring.boot_security.model;
+//package ru.kata.spring.boot_security.models;
 //
 //
 //
