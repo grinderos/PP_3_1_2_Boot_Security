@@ -14,7 +14,7 @@ public class LoggedUser {
     private int id;
 
     @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 2, max = 100, message = "В логине не должно быть менее 2 знаков")
+    @Size(min = 3, max = 100, message = "В логине не должно быть менее 3 знаков")
     @Column(name = "username")
     private String username;
 

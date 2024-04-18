@@ -6,7 +6,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kata.spring.boot_security.service.LoggedUserDetailsService;
 
@@ -22,18 +23,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //настраивает аутентификацию
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(loggedUserDetailsService);
+        auth.userDetailsService(loggedUserDetailsService)
+                .passwordEncoder(getPasswordEncoder());
     }
 
     //конфигурируем сам спринг секьюрити и авторизацию
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //отключаем защиту от межсайтовой подделки запросов
-                .csrf().disable()
+//                //отключаем защиту от межсайтовой подделки запросов
+//                .csrf().disable()
+
+
+
                 //правила авторизации. Матчеры срабатывают последовательно (как при исключениях), что означает
                 //применение при первом подходящем совпадении.
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/error", "/auth/register")
+                .antMatchers("/auth/login", "/auth/register", "/error")
                 .permitAll()
                 .anyRequest().authenticated()
 
@@ -43,11 +48,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/hello", true)
-                .failureUrl("/auth/login?error");
+                .failureUrl("/auth/login?error")
+
+                .and()
+
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login");
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+//        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
+
     }
 }
