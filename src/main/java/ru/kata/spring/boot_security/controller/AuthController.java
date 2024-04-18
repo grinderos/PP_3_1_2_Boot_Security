@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.config;
+package ru.kata.spring.boot_security.controller;
 
 
 import org.springframework.stereotype.Controller;
@@ -13,4 +13,5 @@ public class AuthController {
     public String loginPage(){
         return "auth/login";
     }
+
 }
