@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -13,7 +14,7 @@ public class LoggedUser {
     private int id;
 
     @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 2, max = 100, message = "Не должно быть менее 2 знаков")
+    @Size(min = 2, max = 100, message = "В логине не должно быть менее 2 знаков")
     @Column(name = "username")
     private String username;
 
@@ -21,6 +22,7 @@ public class LoggedUser {
     private String password;
 
     @Column(name = "age")
+    @Min(value = 0, message = "Неверно указан возраст")
     private int age;
 
 

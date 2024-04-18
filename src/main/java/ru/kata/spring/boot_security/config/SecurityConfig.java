@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //правила авторизации. Матчеры срабатывают последовательно (как при исключениях), что означает
                 //применение при первом подходящем совпадении.
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/error")
+                .antMatchers("/auth/login", "/error", "/auth/register")
                 .permitAll()
                 .anyRequest().authenticated()
 
