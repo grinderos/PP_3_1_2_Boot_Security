@@ -25,6 +25,9 @@ public class LoggedUser {
     @Min(value = 0, message = "Неверно указан возраст")
     private int age;
 
+    @Column(name = "role")
+    private String role;
+
 
     public LoggedUser() {
     }
@@ -68,12 +71,21 @@ public class LoggedUser {
         this.age = age;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "LoggedUser:" +
                 "\nid      = " + id +
                 "\nusername= " + username +
-                "\npassword= " + password+
-                "\nage     = " + age;
+                "\npassword= " + password +
+                "\nage     = " + age +
+                "\nrole    = " + role;
     }
 }
