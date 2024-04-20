@@ -2,8 +2,6 @@ package ru.kata.spring.boot_security.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,21 +12,22 @@ import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.repositories.UserRepository;
-import ru.kata.spring.boot_security.security.UserDetailsImpl;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-
+    private final PasswordEncoder passwordEncoder;;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserDetailsServiceImpl(UserRepository userRepository, RoleRepository roleRepository
+            , PasswordEncoder passwordEncoder
+    ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -37,41 +36,42 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserDetailsImpl> user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
 
-        if (user.isEmpty()) {
+        if (user == null) {
             throw new UsernameNotFoundException("Пользователь '" + username + "' не найден");
         }
-        return new org.springframework.security.core.userdetails.User(
-                user.get().getUsername(), user.get().getPassword(), user.get().getAuthorities());
+        return user;
     }
 
-
-    public User findById(Long id) {
-        Optional<UserDetailsImpl> user = userRepository.findById(id);
-        return user.orElse(new UserDetailsImpl()).getUser();
+    public User findUserById(Long id) {
+        Optional<User> userFromDb = userRepository.findById(id);
+        return userFromDb.orElse(new User());
     }
 
     @Transactional
-    public boolean save(UserDetailsImpl user) {
-        if (!(userRepository.findByUsername(user.getUsername()).isEmpty())) {
+    public boolean save(User user) {
+        User loadedUserFromDB = userRepository.findByUsername(user.getUsername());
+        if (loadedUserFromDB != null) {
             return false;
         }
-        user.getUser().setRoles(Collections.singleton(new Role(2,"ROLE_USER")));
-        user.getUser().setPassword(passwordEncoder.encode(user.getPassword()));
+
+        user.setRoles(Collections.singleton(new Role(1, "ROLE_ADMIN")));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
-
     @Transactional(readOnly = true)
-    public List<UserDetailsImpl> getUsers() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
     @Transactional
-    public void deleteUserById(long id){
-        userRepository.deleteById(id);
+    public void deleteUserById(Long id) {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+        }
     }
 
     /*
@@ -81,20 +81,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //    public void truncateTable() {
 //        userRepository.truncateTable();
 //    }
-    @Transactional
-    public void fillUsersTable(){
-        List<UserDetailsImpl> users = new ArrayList<UserDetailsImpl>();
-        UserDetailsImpl admin = new UserDetailsImpl(new User());
-        admin.getUser().setUsername("admin");
-        admin.getUser().setPassword("admin");
-        admin.getUser().setAge(30);
-        UserDetailsImpl user = new UserDetailsImpl(new User());
-        admin.getUser().setUsername("user");
-        admin.getUser().setPassword("user");
-        admin.getUser().setAge(20);
-        users.add(admin);
-        users.add(user);
-        userRepository.saveAll(users);
-    }
+
+
+//    @Transactional
+//    public void fillUsersTable() {
+//        List<User> user = new ArrayList<>();
+//        User admin = new User("admin","admin",30);
+//        User user = new User("user","user",20);
+//        user.add(admin);
+//        user.add(user);
+//        userRepository.saveAll(user);
+//    }
 }
 

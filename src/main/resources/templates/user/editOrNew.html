@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/users/addOrUpdate}" th:object="${user}">
+<form th:method="POST" th:action="@{/templates/user/addOrUpdate}" th:object="${user}">
 
     <input type="hidden" th:field="*{id}"/>
 

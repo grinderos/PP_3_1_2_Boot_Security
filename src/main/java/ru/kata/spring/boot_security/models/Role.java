@@ -6,17 +6,17 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name="roles_3_1_3")
+@Table(name="roles")
 public class Role implements GrantedAuthority {
     @Id
     @Column(name="id")
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name="user_role", unique=true)
     private String role;
 
-    @ManyToMany(mappedBy = "roles_3_1_3")
+    @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 
     public Role(){}
@@ -29,11 +29,11 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
