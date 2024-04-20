@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.kata.spring.boot_security.models.LoggedUser;
+import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.service.RegisterService;
 import ru.kata.spring.boot_security.util.LoggedUserValidator;
 
@@ -35,12 +35,12 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String registerPage(@ModelAttribute("user") LoggedUser user) {
+    public String registerPage(@ModelAttribute("user") User user) {
         return "auth/register";
     }
 
     @PostMapping("/register")
-    public String registerSubmit(@ModelAttribute("user") @Valid LoggedUser user, BindingResult bindingResult) {
+    public String registerSubmit(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         loggedUserValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {

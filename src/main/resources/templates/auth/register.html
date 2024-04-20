@@ -18,6 +18,12 @@
         <input type="text" th:field="*{password}" id="password"/>
         <div style="color:darkred" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Ошибка в пароле</div>
         <br/>
+        <label>Роль:
+            <select name="role">
+                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+            </select>
+        </label>
+        <br/>
         <input type="submit" value="Зарегистрировать нового пользователя"/>
     </form>
 

@@ -1,0 +1,44 @@
+SELECT * FROM security_user.users_3_1_3;
+SELECT * FROM security_user.roles_3_1_3;
+SELECT * FROM security_user.user_role_3_1_3;
+
+delete from security_user.users_3_1_3 where id=3;
+
+drop table security_user.users_3_1_3;
+
+set foreign_key_checks = 0;
+drop table security_user.roles_3_1_3;
+set foreign_key_checks = 1;
+
+
+truncate table security_user.users_3_1_3;
+
+alter table security_user.users_3_1_3 add column role varchar(100) not null;
+
+
+
+create table if not exists security_user.users_3_1_3 (
+id bigint primary key auto_increment,
+    username varchar(40) not null unique,
+    age int not null,
+    login_password varchar(100) not null
+);
+
+create table if not exists security_user.roles_3_1_3 (
+id int primary key auto_increment,
+user_role varchar(20) unique not null
+);
+
+create table if not exists security_user.user_role_3_1_3 (
+user_id bigint not null,
+role_id int not null,
+primary key (user_id, role_id),
+foreign key (user_id) references security_user.users_3_1_3 (id),
+foreign key (role_id) references security_user.roles_3_1_3 (id)
+);
+
+INSERT INTO security_user.users_3_1_3 (username, age, login_password)
+VALUES 	('admin111', 34, 'admin_password'),
+		('user111', 18, 'user_password');
+
+INSERT INTO security_user.roles_3_1_3 (user_role) values ('ROLE_USER'), ('ROLE_ADMIN');

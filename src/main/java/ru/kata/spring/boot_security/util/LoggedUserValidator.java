@@ -6,32 +6,32 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.kata.spring.boot_security.models.LoggedUser;
-import ru.kata.spring.boot_security.service.LoggedUserDetailsService;
+import ru.kata.spring.boot_security.models.User;
+import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 
 @Component
 public class LoggedUserValidator implements Validator {
 
-    private final LoggedUserDetailsService loggedUserDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
-    public LoggedUserValidator(LoggedUserDetailsService loggedUserDetailsService) {
-        this.loggedUserDetailsService = loggedUserDetailsService;
+    public LoggedUserValidator(UserDetailsServiceImpl userDetailsServiceImpl) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return LoggedUser.class.equals(clazz);
+        return User.class.equals(clazz);
     }
 
 
-    // надо бы переписать с использованием LoggedUserValidationService где будет возвращаться Optional.
-    // Пока что мы будем опираться на метод LoggedUserDetailsService.loadUserByUsername и на выбрасываемое им исключение
+    // надо бы переписать с использованием UserValidationService где будет возвращаться Optional.
+    // Пока что мы будем опираться на метод UserDetailsServiceImpl.loadUserByUsername и на выбрасываемое им исключение
     @Override
     public void validate(Object target, Errors errors) {
-        LoggedUser loggedUser = (LoggedUser) target;
+        User user = (User) target;
         try {
-            loggedUserDetailsService.loadUserByUsername(loggedUser.getUsername());
+            userDetailsServiceImpl.loadUserByUsername(user.getUsername());
         } catch (UsernameNotFoundException e) {
             //так как исключение сработало, значит пользователь не найден и можно завершить регистрацию
             return;
