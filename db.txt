@@ -1,15 +1,8 @@
-SELECT * FROM security_user.users_3_1_3;
-SELECT * FROM security_user.roles_3_1_3;
-SELECT * FROM security_user.user_role_3_1_3;
+SELECT * FROM security_user.users;
+SELECT * FROM security_user.roles;
+SELECT * FROM security_user.user_role;
 
 delete from security_user.users_3_1_3 where id=3;
-
-drop table security_user.users_3_1_3;
-
-set foreign_key_checks = 0;
-drop table security_user.roles_3_1_3;
-set foreign_key_checks = 1;
-
 
 truncate table security_user.users_3_1_3;
 
@@ -38,7 +31,32 @@ foreign key (role_id) references security_user.roles_3_1_3 (id)
 );
 
 INSERT INTO security_user.users_3_1_3 (username, age, login_password)
-VALUES 	('admin111', 34, 'admin_password'),
-		('user111', 18, 'user_password');
+VALUES 	('admin', 30, 'admin'),
+		('user', 20, 'user');
 
 INSERT INTO security_user.roles_3_1_3 (user_role) values ('ROLE_USER'), ('ROLE_ADMIN');
+
+INSERT INTO security_user.user_role_3_1_3 (user_id, role_id)
+VALUES 	(1, 'ROLE_ADMIN'),
+		(2, 'ROLE_USER');
+
+INSERT INTO security_user.user_role_3_1_3 (user_id, role_id)
+    VALUES ((SELECT id FROM users_3_1_3 WHERE username ='admin'),
+           (SELECT id FROM roles_3_1_3 WHERE user_role ='ROLE_ADMIN'));
+
+INSERT INTO security_user.user_role_3_1_3 (user_id, role_id)
+    VALUES ((SELECT id FROM security_user.users_3_1_3 WHERE username ='user'),
+           (SELECT id FROM security_user.roles_3_1_3 WHERE user_role ='ROLE_USER'));
+
+
+set foreign_key_checks = 0;
+drop table security_user.roles_3_1_3;
+set foreign_key_checks = 1;
+
+set foreign_key_checks = 0;
+drop table security_user.users_3_1_3;
+set foreign_key_checks = 1;
+
+set foreign_key_checks = 0;
+drop table security_user.user_role_3_1_3;
+set foreign_key_checks = 1;
