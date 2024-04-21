@@ -41,22 +41,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .anyRequest()
 //                .antMatchers("/userInfo").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/","/hello", "/auth/**", "/error").permitAll()
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-//                .anyRequest().permitAll()
+//                .antMatchers("/","/hello", "/auth/**", "/error").permitAll()
+//                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
 
                 .formLogin()
-//                .loginPage("/auth/login")
+                .loginPage("/auth/login")
 //                .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/hello", true)
-                .failureUrl("/auth/login?error")
+//                .failureUrl("/auth/login?error")
 
                 .and()
 
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login");
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/hello");
     }
 
     @Bean

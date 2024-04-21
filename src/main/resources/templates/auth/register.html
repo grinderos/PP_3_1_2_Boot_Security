@@ -19,9 +19,10 @@
         <div style="color:darkred" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Ошибка в пароле</div>
         <br/>
         <label>Роль:
-            <select name="role">
-                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
-            </select>
+            <th:block th:each="role: ${listRoles}">
+                <input type="checkbox" th:field="*{roles}"
+                       th:text="${role.name}" th:value="${role.id}"/>
+            </th:block>
         </label>
         <br/>
         <input type="submit" value="Зарегистрировать нового пользователя"/>

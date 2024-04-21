@@ -28,7 +28,7 @@
             <td th:text="${user.age}"></td>
             <td th:text="${user.roles}"></td>
             <td>
-                <form th:method="POST" th:action="@{/templates/user/edit?id={id}(id=${user.getId()})}">
+                <form th:method="POST" th:action="@{/user/edit?id={id}(id=${user.getId()})}">
                     <input type="submit" value="update"/>
                 </form>
 

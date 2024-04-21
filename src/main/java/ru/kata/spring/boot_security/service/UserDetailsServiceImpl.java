@@ -74,6 +74,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
 
+    @Transactional
+    public List<Role> getRoles() {
+        return roleRepository.findAll();
+    }
     /*
     Далее идут вспомогательные методы, чтоб не лазить каждый раз в Workbench
     */

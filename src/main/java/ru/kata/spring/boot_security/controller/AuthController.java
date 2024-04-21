@@ -50,6 +50,7 @@ public class AuthController {
 
     @GetMapping("/auth/register")
     public String registration(@ModelAttribute("user") User user) {
+
         return "/auth/register";
     }
 
@@ -67,7 +68,7 @@ public class AuthController {
             return "auth/register";
         }
 
-        return "redirect:/";
+        return "redirect:/hello";
     }
 
 //    @PostMapping("/reg")
