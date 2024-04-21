@@ -34,7 +34,7 @@ public class AdminController {
     public String editUser(@RequestParam("id") Long id, Model model) {
         model.addAttribute("user", userService.findUserById(id));
         model.addAttribute("listRoles", userService.getRoles());
-        return "/auth/register";
+        return "/user/edit";
     }
 //    @PostMapping("/admin")
 //    public String deleteUser(@RequestParam(required = true, defaultValue = "" ) Long id,

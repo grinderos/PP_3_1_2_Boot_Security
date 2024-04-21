@@ -49,8 +49,12 @@ public class AuthController {
     }
 
     @GetMapping("/auth/register")
-    public String registration(@ModelAttribute("user") User user) {
-
+    public String registration(
+//            @ModelAttribute("user") User user
+            Model model
+    ) {
+        model.addAttribute("user", new User());
+        model.addAttribute("listRoles", userService.getRoles());
         return "/auth/register";
     }
 
@@ -65,10 +69,14 @@ public class AuthController {
 //        }
         if (!userService.save(user)){
 //            model.addAttribute("usernameAlreadyExists", "Пользователь с таким именем уже существует");
-            return "auth/register";
+            return "/auth/register";
         }
-
-        return "redirect:/hello";
+        if(user.getRoles().contains("ROLE_ADMIN")){
+            return "redirect:/admin/admin";
+        } else if (user.getRoles().contains("ROLE_USER")){
+            return "redirect:/user/user";
+        }
+        return "redirect:/";
     }
 
 //    @PostMapping("/reg")
