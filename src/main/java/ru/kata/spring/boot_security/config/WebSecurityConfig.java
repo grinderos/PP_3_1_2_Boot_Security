@@ -19,6 +19,12 @@ import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 @EnableMethodSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final SuccessUserHandler successUserHandler;
+
+    @Autowired
+    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+        this.successUserHandler = successUserHandler;
+    }
 
     //настраивает аутентификацию
         protected void configure(AuthenticationManagerBuilder auth, UserDetailsServiceImpl userDetailsServiceImpl) throws Exception {
@@ -36,23 +42,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //правила авторизации. Матчеры срабатывают последовательно (как при исключениях), что означает
                 //применение при первом подходящем совпадении.
                 .authorizeRequests()
+                .antMatchers("/","/hello", "/auth/**", "/error").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
 //                .anyRequest()
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/auth/login", "/auth/register", "/error", "/hello").permitAll()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
                 .and()
 
-                .formLogin()
-                    .loginPage("/auth/login")
-                  .loginProcessingUrl("/process_login")
-                    .defaultSuccessUrl("/user", true)
-                  .failureUrl("/auth/login?error")
-
+//                .formLogin()
+//                    .loginPage("/auth/login")
+//                  .loginProcessingUrl("/process_login")
+//                    .defaultSuccessUrl("/user", true)
+//                  .failureUrl("/auth/login?error")
+//
+//                .and()
+//
+//                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login").permitAll();
+                .formLogin().successHandler(successUserHandler)
+                .permitAll()
                 .and()
-
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login").permitAll();
+                .logout()
+                .permitAll();
     }
 
     @Bean

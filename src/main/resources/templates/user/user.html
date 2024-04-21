@@ -7,7 +7,7 @@
 <form th:method="POST" th:action="@{/logout}">
     <input type="submit" value="logout"/>
 </form>
-<table border="1">
+<table border="2">
     <caption><h2>User Info</h2></caption>
     <thead>
     <tr>
@@ -15,21 +15,17 @@
         <th> username </th>
         <th> age </th>
         <th> roles </th>
-        <th> action </th>
     </tr>
     </thead>
     <tbody>
 
     <tr th:object="${user}">
 
-        <td th:text="${user.getId()}"></td>
-        <td th:text="${user.getUsername()}"></td>
-        <td th:text="${user.getAge()}"></td>
-        <td th:text="${user.getAuthorities()}"></td>
-        <td>
-            <form th:method="POST" th:action="@{/user/edit?id={id}(id=${user.getId()})}">
-                <input type="submit" value=" edit "/>
-            </form>
+        <td th:text=" ${user.getId()} "></td>
+        <td th:text=" ${user.getUsername()} "></td>
+        <td th:text=" ${user.getAge()} "></td>
+        <td th:text=" ${user.getAuthorities()} "></td>
+
         </td>
     </tr>
     </tbody>

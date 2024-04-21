@@ -63,6 +63,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 //        user.addRole(roleRepository.findByName("ROLE_USER"));
 //        user.setRoles(Collections.singleton(new Role(1, "ROLE_ADMIN")));
+        System.out.println("сохранение пользователя "+user.getUsername()+"с паролем "+user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user.getPassword());
+        userRepository.save(user);
+        return true;
+    }
+
+    @Transactional
+    public boolean update(User user) {
+        System.out.println("сохранение пользователя "+user.getUsername()+" с паролем "+user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;

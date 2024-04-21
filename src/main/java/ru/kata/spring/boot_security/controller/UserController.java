@@ -11,7 +11,7 @@ import java.security.Principal;
 
 
 @Controller
-@RequestMapping
+//@RequestMapping
 public class UserController {
 
     private UserDetailsServiceImpl userService;
@@ -30,12 +30,7 @@ public class UserController {
         return "/user/user";
     }
 
-    @PostMapping("/user/edit")
-    public String editUser(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
-        model.addAttribute("listRoles", userService.getRoles());
-        return "/user/edit";
-    }
+
 
 
 //    @PostMapping("/user/edit")
