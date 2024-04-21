@@ -34,9 +34,9 @@ INSERT INTO security_user.users_3_1_3 (username, age, login_password)
 VALUES 	('admin', 30, 'admin'),
 		('user', 20, 'user');
 
-INSERT INTO security_user.roles_3_1_3 (user_role) values ('ROLE_USER'), ('ROLE_ADMIN');
+INSERT INTO security_user.roles (user_role) values ('ROLE_USER'), ('ROLE_ADMIN');
 
-INSERT INTO security_user.user_role_3_1_3 (user_id, role_id)
+INSERT INTO security_user.user_role (user_id, role_id)
 VALUES 	(1, 'ROLE_ADMIN'),
 		(2, 'ROLE_USER');
 
@@ -50,13 +50,13 @@ INSERT INTO security_user.user_role_3_1_3 (user_id, role_id)
 
 
 set foreign_key_checks = 0;
-drop table security_user.roles_3_1_3;
+drop table security_user.roles;
 set foreign_key_checks = 1;
 
 set foreign_key_checks = 0;
-drop table security_user.users_3_1_3;
+drop table security_user.users;
 set foreign_key_checks = 1;
 
 set foreign_key_checks = 0;
-drop table security_user.user_role_3_1_3;
+drop table security_user.user_role;
 set foreign_key_checks = 1;

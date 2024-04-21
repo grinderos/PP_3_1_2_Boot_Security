@@ -6,7 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
+
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -17,6 +20,14 @@ public class AdminController {
     public String userList(Model model) {
         model.addAttribute("allUsers", userService.getUsers());
         return "/admin/admin";
+    }
+
+    @GetMapping("/admin/users")
+    public String listAllUsers(Model model) {
+        List<User> list = userService.getUsers();
+        model.addAttribute("users", list);
+
+        return "admin/users";
     }
 
 //    @PostMapping("/admin")

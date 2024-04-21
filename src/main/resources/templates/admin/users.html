@@ -13,18 +13,20 @@
         <caption><h2>List of Users</h2></caption>
         <thead>
         <tr>
-            <th> name </th>
+            <th> id </th>
+            <th> username </th>
             <th> age </th>
-            <th> email </th>
+            <th> roles </th>
             <th> action </th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user, iterStat : ${users}">
 
-            <td th:text="${user.firstName+' '+user.lastName}"></td>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
             <td th:text="${user.age}"></td>
-            <td th:text="${user.email}"></td>
+            <td th:text="${user.roles}"></td>
             <td>
                 <form th:method="POST" th:action="@{/templates/user/edit?id={id}(id=${user.getId()})}">
                     <input type="submit" value="update"/>

@@ -55,8 +55,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (loadedUserFromDB != null) {
             return false;
         }
-
-        user.setRoles(Collections.singleton(new Role(1, "ROLE_ADMIN")));
+        user.addRole(roleRepository.findByName("ROLE_USER"));
+//        user.setRoles(Collections.singleton(new Role(1, "ROLE_ADMIN")));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;

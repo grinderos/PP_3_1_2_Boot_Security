@@ -10,23 +10,26 @@ import java.util.Collection;
 public class Role implements GrantedAuthority {
     @Id
     @Column(name="id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name="user_role", unique=true)
-    private String role;
+    private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+//    @ManyToMany(mappedBy = "roles")
+//    private Collection<User> users;
 
     public Role(){}
 
     public Role(int id){
         this.id = id;
     }
-    public Role(int id, String role) {
+    public Role(String name){
+        this.name = name;
+    }
+    public Role(int id, String name) {
         this.id = id;
-        this.role = role;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -38,24 +41,24 @@ public class Role implements GrantedAuthority {
     }
 
     public String getRole() {
-        return role;
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(String name) {
+        this.name = name;
     }
 
-    public Collection<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Collection<User> users) {
-        this.users = users;
-    }
+//    public Collection<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Collection<User> users) {
+//        this.users = users;
+//    }
 
     @Override
     public String toString() {
-        return role;
+        return name;
     }
 
     @Override

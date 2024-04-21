@@ -10,38 +10,40 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 3, max = 40, message = "Логин должен содержать не менее трех символов")
-    @Column(name = "username")
+//    @NotEmpty(message = "Поле не должно быть пустым")
+//    @Size(min = 3, max = 40, message = "Логин должен содержать не менее трех символов")
+    @Column(name = "username", nullable = false, unique = true, length = 32)
     private String username;
 
-    @Column(name = "login_password")
-    @Size(min = 3, max = 40, message = "Логин должен содержать не менее трех символов")
+    @Column(name = "login_password", nullable = false, length = 64)
+//    @Size(min = 3, max = 40, message = "Логин должен содержать не менее трех символов")
     private String password;
 
     @Column(name = "age")
-    @Min(value = 0, message = "Неверно указан возраст")
-    private int age;
+//    @Min(value = 0, message = "Неверно указан возраст")
+    private Integer age;
 
 //    @Column(name = "role")
 //    private String role;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @Fetch(FetchMode.JOIN)
+    @ManyToMany(fetch = FetchType.EAGER)
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+//    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -50,6 +52,14 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.age = age;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setUsername(String username) {
@@ -80,12 +90,16 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     public Collection<Role> getRoles() {
         return roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     @Override
