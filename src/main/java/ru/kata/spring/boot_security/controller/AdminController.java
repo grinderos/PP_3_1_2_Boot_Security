@@ -30,12 +30,7 @@ public class AdminController {
         return "admin/users";
     }
 
-    @PostMapping("/user/edit")
-    public String editUser(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
-        model.addAttribute("listRoles", userService.getRoles());
-        return "/user/edit";
-    }
+
 //    @PostMapping("/admin")
 //    public String deleteUser(@RequestParam(required = true, defaultValue = "" ) Long id,
 //                              @RequestParam(required = true, defaultValue = "" ) String action,

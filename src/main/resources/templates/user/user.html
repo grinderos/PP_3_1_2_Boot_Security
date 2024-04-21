@@ -4,23 +4,36 @@
     <title>User information</title>
 </head>
 <body>
-
-<table border="1px" >
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="logout"/>
+</form>
+<table border="1">
+    <caption><h2>User Info</h2></caption>
     <thead>
     <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Age</th>
+        <th> id </th>
+        <th> username </th>
+        <th> age </th>
+        <th> roles </th>
+        <th> action </th>
     </tr>
     </thead>
     <tbody>
+
     <tr th:object="${user}">
-        <td><h1 th:text="${user.getUsername()} "></h1></td>
-        <td><h1 th:text="${user.getAge()}"></h1></td>
+
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getAge()}"></td>
+        <td th:text="${user.getAuthorities()}"></td>
+        <td>
+            <form th:method="POST" th:action="@{/user/edit?id={id}(id=${user.getId()})}">
+                <input type="submit" value=" edit "/>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
-
-<input type = "button" value = "Logout" onclick = "window.location.href = '/logout'"/>
 
 </body>
 </html>

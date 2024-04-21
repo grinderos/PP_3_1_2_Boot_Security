@@ -25,7 +25,8 @@ public class AuthController {
 //    private final RegisterService registerService;
 
     private UserDetailsServiceImpl userService;
-//
+
+    //
     @Autowired
     public AuthController(UserValidator userValidator, UserDetailsServiceImpl userService) {
         this.userValidator = userValidator;
@@ -33,10 +34,8 @@ public class AuthController {
     }
 
 
-
-
     @GetMapping("/")
-    public String hello(ModelMap model){
+    public String hello(ModelMap model) {
         ArrayList<String> messages = new ArrayList<>();
         messages.add("Для входа с имеющимся именем пользователя выберите 'LOGIN'");
         messages.add("Для регистрации выберите 'register'");
@@ -71,15 +70,15 @@ public class AuthController {
 //            model.addAttribute("passwordError", "Пароли не совпадают");
 //            return "registration";
 //        }
-        if (!userService.save(user)){
+        if (!userService.save(user)) {
             System.out.println("Пользователь не был сохранен");
 //            model.addAttribute("usernameAlreadyExists", "Пользователь с таким именем уже существует");
             return "/auth/register";
         }
-        if(user.getRoles().contains("ROLE_ADMIN")){
+        if (user.getRoles().contains("ROLE_ADMIN")) {
             System.out.println("зарегался админ");
             return "redirect:/admin/admin";
-        } else if (user.getRoles().contains("ROLE_USER")){
+        } else if (user.getRoles().contains("ROLE_USER")) {
             System.out.println("зарегался юзер");
             return "redirect:/user/user";
         }

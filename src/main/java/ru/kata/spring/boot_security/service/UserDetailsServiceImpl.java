@@ -41,12 +41,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь '" + username + "' не найден");
         }
+//        return new org.springframework.security.core.userdetails.User(
+//                user.getUsername(), user.getPassword(), user.getAuthorities());
         return user;
     }
 
     public User findUserById(Long id) {
         Optional<User> userFromDb = userRepository.findById(id);
         return userFromDb.orElse(new User());
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Transactional
