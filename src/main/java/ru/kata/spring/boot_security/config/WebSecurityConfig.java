@@ -36,27 +36,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //правила авторизации. Матчеры срабатывают последовательно (как при исключениях), что означает
                 //применение при первом подходящем совпадении.
                 .authorizeRequests()
-//                .antMatchers("/admin").hasRole("ADMIN")
-//                .antMatchers("/auth/login", "/auth/register", "/error", "/hello, ","/index").permitAll()
-//                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .anyRequest()
-//                .antMatchers("/userInfo").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/","/hello", "/auth/**", "/error").permitAll()
-//                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-//                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+//                .antMatchers("/auth/login", "/auth/register", "/error", "/hello").permitAll()
 //                .anyRequest().authenticated()
                 .anyRequest().permitAll()
                 .and()
 
                 .formLogin()
-                .loginPage("/auth/login")
-//                .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/hello", true)
-//                .failureUrl("/auth/login?error")
+                    .loginPage("/auth/login")
+                  .loginProcessingUrl("/process_login")
+                    .defaultSuccessUrl("/user/user", true)
+                  .failureUrl("/auth/login?error")
 
                 .and()
 
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/hello");
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login").permitAll();
     }
 
     @Bean
