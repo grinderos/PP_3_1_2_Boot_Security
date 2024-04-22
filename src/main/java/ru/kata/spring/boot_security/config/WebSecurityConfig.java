@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.security.AuthenticationProviderImpl;
+//import ru.kata.spring.boot_security.security.AuthenticationProviderImpl;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 
 @EnableWebSecurity
@@ -20,19 +20,21 @@ import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
-    private final AuthenticationProviderImpl authenticationProvider;
+//    private final AuthenticationProviderImpl authenticationProvider;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, AuthenticationProviderImpl authenticationProvider) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler
+//            , AuthenticationProviderImpl authenticationProvider
+    ) {
         this.successUserHandler = successUserHandler;
-        this.authenticationProvider = authenticationProvider;
+//        this.authenticationProvider = authenticationProvider;
     }
 
     //настраивает аутентификацию
         protected void configure(AuthenticationManagerBuilder auth, UserDetailsServiceImpl userDetailsServiceImpl) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl)
                 .passwordEncoder(passwordEncoder());
-        auth.authenticationProvider(authenticationProvider);
+//        auth.authenticationProvider(authenticationProvider);
     }
 
     protected void configure(HttpSecurity http) throws Exception {
