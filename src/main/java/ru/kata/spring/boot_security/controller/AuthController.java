@@ -14,7 +14,6 @@ import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 import ru.kata.spring.boot_security.util.UserValidator;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 
 @Controller
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 public class AuthController {
 
     private final UserValidator userValidator;
-//    private final RegisterService registerService;
     private final Role checkAdmin = new Role("ROLE_ADMIN");
     private UserDetailsServiceImpl userService;
 
@@ -42,13 +40,6 @@ public class AuthController {
         model.addAttribute("messages", messages);
         return "/start";
     }
-
-////    @GetMapping("/auth/login")
-//    @GetMapping("/login")
-//    public String loginPage() {
-////        return "loooog";
-//        return "/login";
-//    }
 
     @GetMapping("/auth/register")
     public String registration(Model model) {
