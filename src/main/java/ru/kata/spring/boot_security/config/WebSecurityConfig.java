@@ -12,45 +12,39 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.kata.spring.boot_security.security.AuthenticationProviderImpl;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableMethodSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
+    private final AuthenticationProviderImpl authenticationProvider;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, AuthenticationProviderImpl authenticationProvider) {
         this.successUserHandler = successUserHandler;
+        this.authenticationProvider = authenticationProvider;
     }
 
     //настраивает аутентификацию
         protected void configure(AuthenticationManagerBuilder auth, UserDetailsServiceImpl userDetailsServiceImpl) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl)
                 .passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(authenticationProvider);
     }
 
-    //конфигурируем сам спринг секьюрити и авторизацию
     protected void configure(HttpSecurity http) throws Exception {
         http
 //                //отключаем защиту от межсайтовой подделки запросов
 //                .csrf().disable()
-
-
-                //правила авторизации. Матчеры срабатывают последовательно (как при исключениях), что означает
-                //применение при первом подходящем совпадении.
                 .authorizeRequests()
-                .antMatchers("/","/start", "/auth/**", "/error").permitAll()
+                .antMatchers("/","/start","/login", "/auth/**", "/error").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-//                .anyRequest()
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-
                 .anyRequest().authenticated()
-//                .anyRequest().permitAll()
                 .and()
-
 //                .formLogin()
 //                    .loginPage("/auth/login")
 //                  .loginProcessingUrl("/process_login")
@@ -60,7 +54,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //
 //                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login").permitAll();
-                .formLogin().successHandler(successUserHandler)
+                .formLogin()
+                .successHandler(successUserHandler)
+                .loginPage("/auth/login")
                 .permitAll()
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/")
@@ -68,16 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Autowired
-//    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(
-//                bCryptPasswordEncoder()
-//        );
-//    }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService){

@@ -16,9 +16,6 @@ public class Role implements GrantedAuthority {
     @Column(name="user_role", unique=true)
     private String name;
 
-//    @ManyToMany(mappedBy = "roles")
-//    private Collection<User> users;
-
     public Role(){}
 
     public Role(int id){
@@ -47,14 +44,6 @@ public class Role implements GrantedAuthority {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public Collection<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Collection<User> users) {
-//        this.users = users;
-//    }
 
     @Override
     public String toString() {

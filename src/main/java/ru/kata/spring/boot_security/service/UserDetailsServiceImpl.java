@@ -13,16 +13,15 @@ import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.repositories.UserRepository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository, RoleRepository roleRepository
@@ -41,17 +40,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь '" + username + "' не найден");
         }
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getUsername(), user.getPassword(), user.getAuthorities());
         return user;
     }
 
+    @Transactional(readOnly = true)
     public User findUserById(Long id) {
         Optional<User> userFromDb = userRepository.findById(id);
         return userFromDb.orElse(new User());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -102,20 +100,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     /*
     Далее идут вспомогательные методы, чтоб не лазить каждый раз в Workbench
     */
-//    @Transactional
-//    public void truncateTable() {
-//        userRepository.truncateTable();
-//    }
+    @Transactional
+    public void truncate() {
+        userRepository.truncateUsers();
+        userRepository.truncateUser_role();
+    }
 
-
-//    @Transactional
-//    public void fillUsersTable() {
-//        List<User> user = new ArrayList<>();
-//        User admin = new User("admin","admin",30);
-//        User user = new User("user","user",20);
-//        user.add(admin);
-//        user.add(user);
-//        userRepository.saveAll(user);
-//    }
+    @Transactional
+    public void fillUsers(){
+        User admin = new User("admin", 33, "admin");
+        admin.setRoles(new HashSet<>(roleRepository.findAll()));
+        User user = new User("user", 22, "user");
+        user.addRole(roleRepository.findByName("ROLE_USER"));
+        User loadedUserFromDB = userRepository.findByUsername(admin.getUsername());
+        if (loadedUserFromDB == null) {
+            userRepository.save(admin);
+        }
+        loadedUserFromDB=null;
+        loadedUserFromDB = userRepository.findByUsername(user.getUsername());
+        if (loadedUserFromDB == null) {
+            userRepository.save(user);
+        }
+    }
 }
 

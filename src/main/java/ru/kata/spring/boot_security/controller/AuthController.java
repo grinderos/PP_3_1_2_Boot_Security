@@ -17,20 +17,21 @@ import ru.kata.spring.boot_security.util.UserValidator;
 import java.util.ArrayList;
 
 @Controller
-//@RequestMapping("/")
 public class AuthController {
 
     private final UserValidator userValidator;
-    private final Role checkAdmin = new Role("ROLE_ADMIN");
     private UserDetailsServiceImpl userService;
 
-    //
     @Autowired
     public AuthController(UserValidator userValidator, UserDetailsServiceImpl userService) {
         this.userValidator = userValidator;
         this.userService = userService;
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "auth/login";
+    }
 
     @GetMapping("/")
     public String start(ModelMap model) {
@@ -63,24 +64,6 @@ public class AuthController {
             System.out.println("Пользователь не был сохранен");
             return "/auth/register";
         }
-//        if (user.getRoles().contains(checkAdmin)) {
-//            System.out.println("зарегался админ");
-//            return "redirect:/admin";
-//        } else {
-//            System.out.println("зарегался юзер");
-//            return "redirect:/user/user";
-//        }
         return "redirect:/";
     }
-
-//    @PostMapping("/reg")
-//    public String regIt(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-//        loggedUserValidator.validate(user, bindingResult);
-//
-//        if (bindingResult.hasErrors()) {
-//            return "auth/register";
-//        }
-//        registerService.register(user);
-//        return "redirect:/auth/login";
-//    }
 }

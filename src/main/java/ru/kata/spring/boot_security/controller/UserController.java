@@ -25,8 +25,6 @@ public class UserController {
 
     @GetMapping("/user")
     public String getUserInfo(Model model, Principal principal) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User user = (User)authentication.getPrincipal();
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", userService.loadUserByUsername(user.getUsername()));
         return "/user";
@@ -41,39 +39,4 @@ public class UserController {
              return "redirect:/user";
          }
      }
-
-
-//    @PostMapping("/user/edit")
-//    public String editUser(@RequestParam("id") String username, Model model) {
-//        model.addAttribute("user", userService.findByUsername(username));
-//        return "user/editOrNew";
-//    }
-
-//    @PostMapping("/user/addOrUpdate")
-//    public String addUserToBD(@ModelAttribute("user") User user) {
-//        if(user.getAge()<0 || user.getUsername().equals("")){
-//            return "/user/badFieldErr";
-//        } else {
-//            userService.save(user);
-//            return "redirect:/user";
-//        }
-//    }
-
-//    @PostMapping("/delete")
-//    public String deleteUserFromBD(@RequestParam("id") Long id) {
-//        userService.deleteUserById(id);
-//        return "redirect:/user";
-//    }
-
-//    @GetMapping("/truncate")
-//    public String truncateUsersTable() {
-//        userService.truncateTable();
-//        return "user/truncateOrFillTable";
-//    }
-//
-//    @GetMapping("/fill")
-//    public String fillUsersTable() {
-//        userService.fillUsersTable();
-//        return "user/truncateOrFillTable";
-//    }
 }

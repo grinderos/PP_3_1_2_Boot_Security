@@ -19,11 +19,9 @@ import java.util.List;
 public class AdminController {
 
     private UserDetailsServiceImpl userService;
-    private final UserValidator userValidator;
 
     @Autowired
-    public AdminController(UserValidator userValidator, UserDetailsServiceImpl userService) {
-        this.userValidator = userValidator;
+    public AdminController(UserDetailsServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -39,12 +37,14 @@ public class AdminController {
 
         return "admin/users";
     }
+
     @GetMapping("/admin/new")
     public String newUser(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("listRoles", userService.getRoles());
         return "admin/edit";
     }
+
     @PostMapping("/admin/edit")
     public String editUser(@RequestParam("id") Long id, Model model) {
         User user = userService.findUserById(id);
@@ -54,21 +54,29 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            System.out.println("bindingResult.hasErrors() есть ошибки");
+    public String updateUser(@ModelAttribute("user") User user) {
+        if (!userService.updateWithPass(user)) {
+            System.out.println("Пользователь не был сохранен");
             return "admin/edit";
         }
-         if (!userService.updateWithPass(user)) {
-                System.out.println("Пользователь не был сохранен");
-                return "admin/edit";
-            }
         return "redirect:admin/users";
     }
 
     @PostMapping("/admin/delete")
     public String deleteUser(@RequestParam("id") Long id) {
-            userService.deleteUserById(id);
+        userService.deleteUserById(id);
         return "redirect:users";
+    }
+
+    @GetMapping("/admin/truncate")
+    public String truncate() {
+        userService.truncate();
+        return "redirect:/logout";
+    }
+
+    @GetMapping("/admin/fillUsers")
+    public String fillUsers() {
+        userService.fillUsers();
+        return "redirect:/admin";
     }
 }

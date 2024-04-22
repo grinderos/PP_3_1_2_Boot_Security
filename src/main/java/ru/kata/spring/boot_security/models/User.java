@@ -46,10 +46,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, int age) {
+    public User(String username, int age, String password) {
         this.username = username;
-        this.password = password;
         this.age = age;
+        this.password = password;
+
     }
 
     public Long getId() {
