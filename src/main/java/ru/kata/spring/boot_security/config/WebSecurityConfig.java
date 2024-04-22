@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,29 +10,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.security.AuthenticationProviderImpl;
-import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
-    private final AuthenticationProviderImpl authenticationProvider;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler
-            , AuthenticationProviderImpl authenticationProvider
-    ) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
         this.successUserHandler = successUserHandler;
-        this.authenticationProvider = authenticationProvider;
-    }
-
-    //настраивает аутентификацию
-        protected void configure(AuthenticationManagerBuilder auth, UserDetailsServiceImpl userDetailsServiceImpl) throws Exception {
-//        auth.userDetailsService(userDetailsServiceImpl)
-//                .passwordEncoder(passwordEncoder());
-        auth.authenticationProvider(authenticationProvider);
     }
 
     protected void configure(HttpSecurity http) throws Exception {

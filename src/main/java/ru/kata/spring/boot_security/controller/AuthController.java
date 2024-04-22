@@ -12,20 +12,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
-import ru.kata.spring.boot_security.util.UserValidator;
+//import ru.kata.spring.boot_security.util.UserValidator;
 
 import java.util.ArrayList;
 
 @Controller
 public class AuthController {
 
-    private final UserValidator userValidator;
+//    private final UserValidator userValidator;
     private UserDetailsServiceImpl userService;
 
     @Autowired
-    public AuthController(UserValidator userValidator, UserDetailsServiceImpl userService) {
-        this.userValidator = userValidator;
+    public AuthController(UserDetailsServiceImpl userService
+//    , UserValidator userValidator
+                          ) {
         this.userService = userService;
+//        this.userValidator = userValidator;
     }
 
     @GetMapping("/login")
@@ -54,7 +56,6 @@ public class AuthController {
         if(user.getRoles().isEmpty()) {
             user.addRole(new Role("ROLE_USER"));
         }
-        userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             System.out.println("bindingResult.hasErrors() есть ошибки");
             return "/auth/register";

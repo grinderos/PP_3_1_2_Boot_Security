@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
-import ru.kata.spring.boot_security.util.UserValidator;
+//import ru.kata.spring.boot_security.util.UserValidator;
 
 import javax.validation.Valid;
 import java.util.List;

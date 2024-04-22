@@ -16,10 +16,12 @@
     <label for="password">Введите пароль: </label>
     <input type="password" name="password" id="password"/>
     <br/><br/>
-    <input type="submit" value="Войти"/>
+    <input type="button" value=" назад " onclick="history.go(-1)"/>
+    <input type="submit" value=" Войти "/>
     <div th:if="${param.error}" style="color: darkred">
         Неправильные имя или пароль
     </div>
+
 </form>
 </body>
 </html>
