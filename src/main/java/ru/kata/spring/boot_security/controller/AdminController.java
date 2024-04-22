@@ -40,46 +40,29 @@ public class AdminController {
         return "admin/users";
     }
     @GetMapping("/admin/new")
-    public String newUser() {
-//        model.addAttribute("user", new User());
-//        model.addAttribute("listRoles", userService.getRoles());
+    public String newUser(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("listRoles", userService.getRoles());
         return "admin/edit";
     }
     @PostMapping("/admin/edit")
     public String editUser(@RequestParam("id") Long id, Model model) {
         User user = userService.findUserById(id);
-//        user.setPassword("****");
-        System.out.println();
-        System.out.println("ВЫТАЩИЛИ ИЗ БД ЮЗЕРА: \n"+user);
-        System.out.println();
         model.addAttribute("user", user);
-        model.addAttribute("pass", "****");
         model.addAttribute("listRoles", userService.getRoles());
         return "admin/edit";
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam("pass") String password
-//            , BindingResult bindingResult
-    ) {
-        System.out.println();
-        System.out.println("ПРОВЕРЯЕМ, КАКОЙ ПАРОЛЬ ПОСЛЕ ПОЛЯ ИЗМЕНЕНИЯ: \n'"+user.getPassword()+"'");
-        System.out.println();
-        if(password==null) {
-            System.out.println("пустое поле пароля");
-//            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            if (!userService.update(user)) {
-                System.out.println("Пользователь не был сохранен");
-//            model.addAttribute("usernameAlreadyExists", "Пользователь с таким именем уже существует");
-                return "admin/edit";
-            }
-        } else {
-            user.setPassword(password);
-            if (!userService.updateWithPass(user)) {
-                System.out.println("Пользователь не был сохранен");
-                return "admin/edit";
-            }
+    public String updateUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("bindingResult.hasErrors() есть ошибки");
+            return "admin/edit";
         }
+         if (!userService.updateWithPass(user)) {
+                System.out.println("Пользователь не был сохранен");
+                return "admin/edit";
+            }
         return "redirect:admin/users";
     }
 

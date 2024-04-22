@@ -14,23 +14,27 @@
 <form th:method="POST" th:action="@{/update}" th:object="${user}">
     <input type="hidden" th:field="*{id}"/>
     <caption><h1>Заполните поля...</h1></caption><br/>
-    <th:block th:each="role: ${listRoles}">
-        <input type="checkbox" th:field="*{roles}"
-               th:text="${role.name}" th:value="${role.id}"/>
-    </th:block><br/><br/>
 
     <label for="username">Логин: </label>
     <input type="text" th:field="*{username}" id="username"/><br/><br/>
     <label for="age">Возраст: </label>
     <input type="text" th:field="*{age}" id="age"/><br/><br/>
+    <label for="password">Пароль: </label>
+    <input type="text" th:field="*{password}" id="password"/><br/><br/>
+
+    <th:block th:each="role: ${listRoles}">
+        <input type="checkbox" th:field="*{roles}"
+               th:text="${role.name}" th:value="${role.id}"/>
+    </th:block><br/><br/>
+
+    <input type="submit" value="Сохранить"/>
+    <input type="button" value="Отмена" onclick="history.go(-1)"/>
 </form>
 
-<label for="pass">Пароль: </label>
-<input name="pass" type="text" id="pass"/><br/><br/>
+
 
 <br/>
 <br/>
-<input type="submit" value="Сохранить"/>
-<input type="button" value="Отмена" onclick="history.go(-1)"/>
+
 </body>
 </html>
