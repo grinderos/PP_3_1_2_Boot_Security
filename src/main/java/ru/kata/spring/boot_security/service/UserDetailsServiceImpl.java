@@ -51,6 +51,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userFromDb.orElse(new User());
     }
 
+    @Transactional
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -61,19 +62,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (loadedUserFromDB != null) {
             return false;
         }
-//        user.addRole(roleRepository.findByName("ROLE_USER"));
-//        user.setRoles(Collections.singleton(new Role(1, "ROLE_ADMIN")));
-        System.out.println("сохранение пользователя "+user.getUsername()+"с паролем "+user.getPassword());
+        System.out.println("сохранение пользователя \n"+user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         System.out.println(user.getPassword());
         userRepository.save(user);
         return true;
     }
-
+    @Transactional
+    public boolean updateWithPass(User user) {
+        System.out.println("сохранение пользователя \n"+user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user.getPassword());
+        userRepository.save(user);
+        return true;
+    }
     @Transactional
     public boolean update(User user) {
-        System.out.println("сохранение пользователя "+user.getUsername()+" с паролем "+user.getPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println("сохранение пользователя \n"+user);
         userRepository.save(user);
         return true;
     }

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>User information</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/logout}">
-    <input type="submit" value="logout"/>
-</form>
+
+    <form th:method="POST" th:action="@{/logout}">
+        <input type="submit" value="выход из системы"/>
+    </form>
+
+
 <table border="2">
     <caption><h2>User Info</h2></caption>
     <thead>
@@ -30,6 +33,7 @@
     </tr>
     </tbody>
 </table>
-
+<br/>
+<button onclick="window.location.href = '/to_main'"><h2>На главную</h2></button>
 </body>
 </html>

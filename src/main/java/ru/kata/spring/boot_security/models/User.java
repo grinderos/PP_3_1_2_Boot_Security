@@ -26,16 +26,14 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true, length = 32)
     private String username;
 
+//    @NotEmpty(message = "Поле не должно быть пустым")
     @Column(name = "login_password", nullable = false, length = 64)
-//    @Size(min = 3, max = 40, message = "Логин должен содержать не менее трех символов")
+//    @Size(min = 4, max = 100, message = "Пароль должен содержать не менее трех символов")
     private String password;
 
     @Column(name = "age")
 //    @Min(value = 0, message = "Неверно указан возраст")
     private Integer age;
-
-//    @Column(name = "role")
-//    private String role;
 
     @ManyToMany(fetch = FetchType.EAGER)
 //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

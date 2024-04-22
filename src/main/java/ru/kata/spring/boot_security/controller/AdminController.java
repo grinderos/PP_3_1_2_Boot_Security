@@ -29,7 +29,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminPage() {
-        return "/admin/admin";
+        return "admin/admin_panel";
     }
 
     @GetMapping("/admin/users")
@@ -39,39 +39,53 @@ public class AdminController {
 
         return "admin/users";
     }
-    @PostMapping("/admin/new")
-    public String newUser(@ModelAttribute User user, Model model) {
-//        model.addAttribute("user", userService.findUserById(id));
-        model.addAttribute("listRoles", userService.getRoles());
-        return "/user/edit";
+    @GetMapping("/admin/new")
+    public String newUser() {
+//        model.addAttribute("user", new User());
+//        model.addAttribute("listRoles", userService.getRoles());
+        return "admin/edit";
     }
-    @PostMapping("/edit")
+    @PostMapping("/admin/edit")
     public String editUser(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
+        User user = userService.findUserById(id);
+//        user.setPassword("****");
+        System.out.println();
+        System.out.println("ВЫТАЩИЛИ ИЗ БД ЮЗЕРА: \n"+user);
+        System.out.println();
+        model.addAttribute("user", user);
+        model.addAttribute("pass", "****");
         model.addAttribute("listRoles", userService.getRoles());
-        return "/admin/edit";
+        return "admin/edit";
     }
 
-    @PostMapping("/save")
-    public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        System.out.println(user.getRoles());
-//        userValidator.validate(user, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            System.out.println("bindingResult.hasErrors() есть ошибки");
-//            return "/admin/edit";
-//        }
-
-        if (!userService.update(user)) {
-            System.out.println("Пользователь не был сохранен");
+    @PostMapping("/update")
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam("pass") String password
+//            , BindingResult bindingResult
+    ) {
+        System.out.println();
+        System.out.println("ПРОВЕРЯЕМ, КАКОЙ ПАРОЛЬ ПОСЛЕ ПОЛЯ ИЗМЕНЕНИЯ: \n'"+user.getPassword()+"'");
+        System.out.println();
+        if(password==null) {
+            System.out.println("пустое поле пароля");
+//            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            if (!userService.update(user)) {
+                System.out.println("Пользователь не был сохранен");
 //            model.addAttribute("usernameAlreadyExists", "Пользователь с таким именем уже существует");
-            return "/admin/edit";
+                return "admin/edit";
+            }
+        } else {
+            user.setPassword(password);
+            if (!userService.updateWithPass(user)) {
+                System.out.println("Пользователь не был сохранен");
+                return "admin/edit";
+            }
         }
-        return "redirect:/admin";
+        return "redirect:admin/users";
     }
 
     @PostMapping("/admin/delete")
     public String deleteUser(@RequestParam("id") Long id) {
             userService.deleteUserById(id);
-        return "redirect:/admin";
+        return "redirect:users";
     }
 }

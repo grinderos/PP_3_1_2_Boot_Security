@@ -8,10 +8,10 @@
 <form th:method="POST" th:action="@{/logout}">
     <input type="submit" value="выход из системы"/>
 </form><br/>
-<button onclick="window.location.href = '/';">На стартовую страницу</button><br/>
+<button onclick="window.location.href = '/to_main';">На главную</button><br/>
 
 <div><br/>
-    <button onclick="window.location.href = '/users/new';">Добавить нового<br/> пользователя</button>
+    <button onclick="window.location.href = '/admin/new';">Добавить нового<br/> пользователя</button>
     <table border="1">
         <caption><h2>Список пользователей</h2></caption>
         <thead>
@@ -31,11 +31,11 @@
             <td th:text="${user.age}"></td>
             <td th:text="${user.roles}"></td>
             <td>
-                <form th:method="POST" th:action="@{/edit?id={id}(id=${user.getId()})}">
+                <form th:method="POST" th:action="@{/admin/edit?id={id}(id=${user.getId()})}">
                     <input type="submit" value="редактировать"/>
                 </form>
 
-                <form th:method="POST" th:action="@{/delete?id={id}(id=${user.getId()})}">
+                <form th:method="POST" th:action="@{/admin/delete?id={id}(id=${user.getId()})}">
                     <input type="submit" value=" удалить"/>
                 </form>
             </td>

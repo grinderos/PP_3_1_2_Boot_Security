@@ -35,12 +35,12 @@ public class AuthController {
 
 
     @GetMapping("/")
-    public String hello(ModelMap model) {
+    public String start(ModelMap model) {
         ArrayList<String> messages = new ArrayList<>();
         messages.add("Для входа с имеющимся именем пользователя выберите 'войти'");
         messages.add("Для регистрации выберите 'регистрация'");
         model.addAttribute("messages", messages);
-        return "/hello";
+        return "/start";
     }
 
 ////    @GetMapping("/auth/login")
@@ -51,18 +51,17 @@ public class AuthController {
 //    }
 
     @GetMapping("/auth/register")
-    public String registration(
-//            @ModelAttribute("user") User user
-            Model model
-    ) {
+    public String registration(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("listRoles", userService.getRoles());
         return "/auth/register";
     }
 
     @PostMapping("/auth/register_new_user")
-    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        System.out.println(user.getRoles());
+    public String addUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+        if(user.getRoles().isEmpty()) {
+            user.addRole(new Role("ROLE_USER"));
+        }
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             System.out.println("bindingResult.hasErrors() есть ошибки");
@@ -71,16 +70,16 @@ public class AuthController {
 
         if (!userService.save(user)) {
             System.out.println("Пользователь не был сохранен");
-//            model.addAttribute("usernameAlreadyExists", "Пользователь с таким именем уже существует");
             return "/auth/register";
         }
-        if (user.getRoles().contains(checkAdmin)) {
-            System.out.println("зарегался админ");
-            return "redirect:/admin";
-        } else {
-            System.out.println("зарегался юзер");
-            return "redirect:/user/user";
-        }
+//        if (user.getRoles().contains(checkAdmin)) {
+//            System.out.println("зарегался админ");
+//            return "redirect:/admin";
+//        } else {
+//            System.out.println("зарегался юзер");
+//            return "redirect:/user/user";
+//        }
+        return "redirect:/";
     }
 
 //    @PostMapping("/reg")

@@ -42,10 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //правила авторизации. Матчеры срабатывают последовательно (как при исключениях), что означает
                 //применение при первом подходящем совпадении.
                 .authorizeRequests()
-                .antMatchers("/","/hello", "/auth/**", "/error").permitAll()
+                .antMatchers("/","/start", "/auth/**", "/error").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
 //                .anyRequest()
-                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
 
                 .anyRequest().authenticated()
 //                .anyRequest().permitAll()
@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
                 .and()
-                .logout()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/")
                 .permitAll();
     }
 
