@@ -68,7 +68,6 @@ public class AuthController {
             System.out.println("bindingResult.hasErrors() есть ошибки");
             return "/auth/register";
         }
-
         if (!userService.save(user)) {
             System.out.println("Пользователь не был сохранен");
             return "/auth/register";
