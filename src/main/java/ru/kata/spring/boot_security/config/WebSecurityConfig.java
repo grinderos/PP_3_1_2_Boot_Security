@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                //отключаем защиту от межсайтовой подделки запросов
 //                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/start", "/login", "/auth/**", "/error", "/fillUsers", "/fillRoles")
+                .antMatchers("/", "/start", "/login", "/auth/**", "/error", "/fillUsers", "/fillRoles","/logout")
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER")

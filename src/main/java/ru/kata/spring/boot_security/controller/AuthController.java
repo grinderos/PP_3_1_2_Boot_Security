@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;

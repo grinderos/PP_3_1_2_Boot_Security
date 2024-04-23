@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
@@ -59,7 +59,9 @@ public class AdminController {
         if (user.getRoles().isEmpty()) {
             user.addRole(roleRepository.findByName("ROLE_USER"));
         }
-        if (!userService.updateWithPass(user)) {
+        if (user.getPassword().length()==60) {
+            userService.update(user);
+        }else if (!userService.updateWithPass(user)) {
             System.out.println("Пользователь не был сохранен");
             return "admin/edit";
         }
@@ -67,8 +69,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/delete")
-    public String deleteUser(@RequestParam("id") Long id) {
+    public String deleteUser(@RequestParam("id") Long id, Authentication autentication) {
+        User deletedUser = userService.findUserById(id);
         userService.deleteUserById(id);
+        if(deletedUser.getUsername().equals(autentication.getName())){
+            return "redirect:/";
+        }
         return "redirect:users";
     }
 

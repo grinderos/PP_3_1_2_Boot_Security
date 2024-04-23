@@ -67,8 +67,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public boolean updateWithPass(User user) {
         System.out.println("сохранение пользователя \n" + user);
+        System.out.println("сохранение пользователя \n" + user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        System.out.println(user.getPassword());
         userRepository.save(user);
         return true;
     }
@@ -108,10 +108,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public void fillUsers() {
-        if(roleRepository.findAll().isEmpty()){
-//            roleRepository.fillRoles();
-            fillRoles();
-        }
+        fillRoles();
         User admin = new User("admin", 33, passwordEncoder.encode("admin"));
         admin.setRoles(new HashSet<>(roleRepository.findAll()));
         User user = new User("user", 22, passwordEncoder.encode("user"));
@@ -131,10 +128,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Transactional
-    public void fillRoles(){
-//        roleRepository.fillRoles();
-        roleRepository.save(new Role("ROLE_ADMIN"));
-        roleRepository.save(new Role("ROLE_USER"));
+    public void fillRoles() {
+        if (roleRepository.findAll().isEmpty()) {
+            roleRepository.save(new Role("ROLE_ADMIN"));
+            roleRepository.save(new Role("ROLE_USER"));
+        }
     }
 }
-
