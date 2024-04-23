@@ -3,16 +3,13 @@ package ru.kata.spring.boot_security.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
-//import ru.kata.spring.boot_security.util.UserValidator;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -71,12 +68,6 @@ public class AdminController {
     @GetMapping("/admin/truncate")
     public String truncate() {
         userService.truncate();
-        return "redirect:/logout";
-    }
-
-    @GetMapping("/admin/fillUsers")
-    public String fillUsers() {
-        userService.fillUsers();
-        return "redirect:/admin";
+        return "redirect:/";
     }
 }

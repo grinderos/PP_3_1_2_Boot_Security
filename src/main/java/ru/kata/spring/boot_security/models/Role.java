@@ -3,27 +3,29 @@ package ru.kata.spring.boot_security.models;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="user_role", unique=true)
+    @Column(name = "user_role", unique = true)
     private String name;
 
-    public Role(){}
+    public Role() {
+    }
 
-    public Role(int id){
+    public Role(int id) {
         this.id = id;
     }
-    public Role(String name){
+
+    public Role(String name) {
         this.name = name;
     }
+
     public Role(int id, String name) {
         this.id = id;
         this.name = name;

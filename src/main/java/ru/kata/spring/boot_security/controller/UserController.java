@@ -30,13 +30,25 @@ public class UserController {
         return "/user";
     }
 
-     @GetMapping("/to_main")
+    @GetMapping("/to_main")
     public String toMain(Principal principal) {
-         User user = userService.findByUsername(principal.getName());
-         if(user.getRoles().contains(checkAdmin)){
-             return "redirect:/admin";
-         } else {
-             return "redirect:/user";
-         }
-     }
+        User user = userService.findByUsername(principal.getName());
+        if (user.getRoles().contains(checkAdmin)) {
+            return "redirect:/admin";
+        } else {
+            return "redirect:/user";
+        }
+    }
+
+    @GetMapping("/fillUsers")
+    public String fillUsers() {
+        userService.fillUsers();
+        return "redirect:/";
+    }
+
+    @GetMapping("/fillRoles")
+    public String fillRoles() {
+        userService.fillRoles();
+        return "redirect:/";
+    }
 }

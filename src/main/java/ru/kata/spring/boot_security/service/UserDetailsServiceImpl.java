@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,8 +13,6 @@ import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.repositories.UserRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -60,23 +57,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (loadedUserFromDB != null) {
             return false;
         }
-        System.out.println("сохранение пользователя \n"+user);
+        System.out.println("сохранение пользователя \n" + user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         System.out.println(user.getPassword());
         userRepository.save(user);
         return true;
     }
+
     @Transactional
     public boolean updateWithPass(User user) {
-        System.out.println("сохранение пользователя \n"+user);
+        System.out.println("сохранение пользователя \n" + user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         System.out.println(user.getPassword());
         userRepository.save(user);
         return true;
     }
+
     @Transactional
     public boolean update(User user) {
-        System.out.println("сохранение пользователя \n"+user);
+        System.out.println("сохранение пользователя \n" + user);
         userRepository.save(user);
         return true;
     }
@@ -97,6 +96,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<Role> getRoles() {
         return roleRepository.findAll();
     }
+
     /*
     Далее идут вспомогательные методы, чтоб не лазить каждый раз в Workbench
     */
@@ -107,20 +107,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Transactional
-    public void fillUsers(){
-        User admin = new User("admin", 33, "admin");
+    public void fillUsers() {
+        User admin = new User("admin", 33, passwordEncoder.encode("admin"));
         admin.setRoles(new HashSet<>(roleRepository.findAll()));
-        User user = new User("user", 22, "user");
+        User user = new User("user", 22, passwordEncoder.encode("user"));
         user.addRole(roleRepository.findByName("ROLE_USER"));
         User loadedUserFromDB = userRepository.findByUsername(admin.getUsername());
         if (loadedUserFromDB == null) {
             userRepository.save(admin);
         }
-        loadedUserFromDB=null;
+        loadedUserFromDB = null;
         loadedUserFromDB = userRepository.findByUsername(user.getUsername());
         if (loadedUserFromDB == null) {
             userRepository.save(user);
         }
+    }
+
+    @Transactional
+    public void fillRoles(){
+        roleRepository.fillRoles();
     }
 }
 

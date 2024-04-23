@@ -1,14 +1,12 @@
 package ru.kata.spring.boot_security.models;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+//import javax.validation.constraints.Min;
+//import javax.validation.constraints.NotEmpty;
+//import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,12 +19,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotEmpty(message = "Поле не должно быть пустым")
+    //    @NotEmpty(message = "Поле не должно быть пустым")
 //    @Size(min = 3, max = 40, message = "Логин должен содержать не менее трех символов")
     @Column(name = "username", nullable = false, unique = true, length = 32)
     private String username;
 
-//    @NotEmpty(message = "Поле не должно быть пустым")
+    //    @NotEmpty(message = "Поле не должно быть пустым")
     @Column(name = "login_password", nullable = false, length = 64)
 //    @Size(min = 4, max = 100, message = "Пароль должен содержать не менее трех символов")
     private String password;
@@ -36,8 +34,6 @@ public class User implements UserDetails {
     private Integer age;
 
     @ManyToMany(fetch = FetchType.EAGER)
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-//    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -71,13 +67,13 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        System.out.println("set password: "+password);
+        System.out.println("set password: " + password);
         this.password = password;
     }
 
     @Override
     public String getPassword() {
-        System.out.println("get password: "+password);
+        System.out.println("get password: " + password);
         return password;
     }
 

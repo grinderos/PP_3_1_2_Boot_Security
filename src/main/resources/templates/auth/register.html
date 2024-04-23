@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Register</title>
 </head>
+
+<th:block th:each="msg : ${messages}">
+    <h3 th:text="${msg}"></h3>
+</th:block>
+
+<br>
 <h2>Регистрация нового пользователя</h2>
 <body>
     <form th:method="POST" th:action="@{/auth/register_new_user}" th:object="${user}">

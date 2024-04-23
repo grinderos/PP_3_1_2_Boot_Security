@@ -27,20 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                //отключаем защиту от межсайтовой подделки запросов
 //                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/start","/login", "/auth/**", "/error").permitAll()
+                .antMatchers("/", "/start", "/login", "/auth/**", "/error", "/fillUsers", "/fillRoles")
+                .permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
-//                .formLogin()
-//                    .loginPage("/auth/login")
-//                  .loginProcessingUrl("/process_login")
-//                    .defaultSuccessUrl("/user", true)
-//                  .failureUrl("/auth/login?error")
-//
-//                .and()
-//
-//                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login").permitAll();
                 .formLogin()
                 .successHandler(successUserHandler)
                 .loginPage("/auth/login")
@@ -58,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService){
+    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);

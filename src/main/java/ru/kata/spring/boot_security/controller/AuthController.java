@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,40 +11,47 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
-//import ru.kata.spring.boot_security.util.UserValidator;
 
 import java.util.ArrayList;
 
 @Controller
 public class AuthController {
 
-//    private final UserValidator userValidator;
     private UserDetailsServiceImpl userService;
 
     @Autowired
-    public AuthController(UserDetailsServiceImpl userService
-//    , UserValidator userValidator
-                          ) {
+    public AuthController(UserDetailsServiceImpl userService) {
         this.userService = userService;
-//        this.userValidator = userValidator;
     }
 
     @GetMapping("/login")
     public String login() {
+        if (userService.getUsers().isEmpty()) {
+            return "redirect:auth/register";
+        }
         return "auth/login";
     }
 
     @GetMapping("/")
-    public String start(ModelMap model) {
+    public String start(ModelMap messageModel) {
         ArrayList<String> messages = new ArrayList<>();
         messages.add("Для входа с имеющимся именем пользователя выберите 'войти'");
         messages.add("Для регистрации выберите 'регистрация'");
-        model.addAttribute("messages", messages);
+        messageModel.addAttribute("messages", messages);
         return "/start";
     }
 
     @GetMapping("/auth/register")
-    public String registration(Model model) {
+    public String registration(Model model, ModelMap messageModel) {
+        if(userService.getRoles().isEmpty()){
+            userService.fillRoles();
+        }
+        if (userService.getUsers().isEmpty()) {
+            ArrayList<String> messages = new ArrayList<>();
+            messages.add("В системе нет ни одного пользователя.");
+            messages.add("Зарегистрируйтесь, чтобы стать первым.");
+            messageModel.addAttribute("messages", messages);
+        }
         model.addAttribute("user", new User());
         model.addAttribute("listRoles", userService.getRoles());
         return "/auth/register";
@@ -53,7 +59,7 @@ public class AuthController {
 
     @PostMapping("/auth/register_new_user")
     public String addUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
-        if(user.getRoles().isEmpty()) {
+        if (user.getRoles().isEmpty()) {
             user.addRole(new Role("ROLE_USER"));
         }
         if (bindingResult.hasErrors()) {
