@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.models.User;
 import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -68,10 +69,11 @@ public class AdminController {
     }
 
     @PostMapping("/admin/delete")
-    public String deleteUser(@RequestParam("id") Long id, Authentication autentication) {
+    public String deleteUser(@RequestParam("id") Long id, Authentication autentication, HttpSession session) {
         User deletedUser = userService.findUserById(id);
         userService.deleteUserById(id);
         if(deletedUser.getUsername().equals(autentication.getName())){
+            session.invalidate();
             return "redirect:/";
         }
         return "redirect:users";
