@@ -1,10 +1,13 @@
 SELECT * FROM security_user.users;
-SELECT * FROM security_user.roles;
 SELECT * FROM security_user.user_role;
+SELECT * FROM security_user.roles;
 
-delete from security_user.users where id=3;
+
+delete from security_user.users where id=2;
+delete from security_user.user_role where user_id=2;
 
 truncate table security_user.users;
+truncate table security_user.user_role;
 
 
 create table if not exists security_user.users (
@@ -16,7 +19,7 @@ id bigint primary key auto_increment,
 
 create table if not exists security_user.roles (
 id int primary key auto_increment,
-user_role varchar(20) unique not null
+name varchar(20) unique not null
 );
 
 create table if not exists security_user.user_role (
@@ -28,14 +31,15 @@ foreign key (role_id) references security_user.roles (id)
 );
 
 INSERT INTO security_user.users (username, age, login_password)
-VALUES 	('admin', 33, 'admin'),
-		('user', 22, 'user');
+VALUES 	('admin', 30, 'admin'),
+		('user', 20, 'user');
 
-INSERT INTO security_user.roles (user_role) values ('ROLE_USER'), ('ROLE_ADMIN');
+INSERT INTO security_user.roles (user_role) values ('ROLE_ADMIN'), ('ROLE_USER');
 
 INSERT INTO security_user.user_role (user_id, role_id)
-VALUES 	(1, 'ROLE_ADMIN'),
-		(2, 'ROLE_USER');
+VALUES 	(1, 1),
+        (1, 2),
+		(2, 2);
 
 INSERT INTO security_user.user_role (user_id, role_id)
     VALUES ((SELECT id FROM users WHERE username ='admin'),
@@ -48,12 +52,6 @@ INSERT INTO security_user.user_role (user_id, role_id)
 
 set foreign_key_checks = 0;
 drop table security_user.roles;
-set foreign_key_checks = 1;
-
-set foreign_key_checks = 0;
 drop table security_user.users;
-set foreign_key_checks = 1;
-
-set foreign_key_checks = 0;
 drop table security_user.user_role;
 set foreign_key_checks = 1;
