@@ -108,6 +108,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public void fillUsers() {
+        if(roleRepository.findAll().isEmpty()){
+//            roleRepository.fillRoles();
+            fillRoles();
+        }
         User admin = new User("admin", 33, passwordEncoder.encode("admin"));
         admin.setRoles(new HashSet<>(roleRepository.findAll()));
         User user = new User("user", 22, passwordEncoder.encode("user"));
@@ -118,6 +122,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         loadedUserFromDB = null;
         loadedUserFromDB = userRepository.findByUsername(user.getUsername());
+        System.out.println("\n");
+        System.out.println(loadedUserFromDB);
+        System.out.println("\n");
         if (loadedUserFromDB == null) {
             userRepository.save(user);
         }
@@ -125,7 +132,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public void fillRoles(){
-        roleRepository.fillRoles();
+//        roleRepository.fillRoles();
+        roleRepository.save(new Role("ROLE_ADMIN"));
+        roleRepository.save(new Role("ROLE_USER"));
     }
 }
 

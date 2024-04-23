@@ -2,12 +2,9 @@ SELECT * FROM security_user.users;
 SELECT * FROM security_user.roles;
 SELECT * FROM security_user.user_role;
 
-delete from security_user.users_3_1_3 where id=3;
+delete from security_user.users where id=3;
 
-truncate table security_user.users_3_1_3;
-
-alter table security_user.users_3_1_3 add column role varchar(100) not null;
-
+truncate table security_user.users;
 
 
 create table if not exists security_user.users (

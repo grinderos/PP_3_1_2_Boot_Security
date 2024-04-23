@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.models.User;
+import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 
 import java.util.List;
@@ -15,11 +17,13 @@ import java.util.List;
 @Controller
 public class AdminController {
 
+    private final RoleRepository roleRepository;
     private UserDetailsServiceImpl userService;
 
     @Autowired
-    public AdminController(UserDetailsServiceImpl userService) {
+    public AdminController(UserDetailsServiceImpl userService, RoleRepository roleRepository) {
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/admin")
@@ -52,6 +56,9 @@ public class AdminController {
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user) {
+        if (user.getRoles().isEmpty()) {
+            user.addRole(roleRepository.findByName("ROLE_USER"));
+        }
         if (!userService.updateWithPass(user)) {
             System.out.println("Пользователь не был сохранен");
             return "admin/edit";

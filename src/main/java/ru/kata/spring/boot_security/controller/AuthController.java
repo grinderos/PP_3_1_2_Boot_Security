@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.models.User;
+import ru.kata.spring.boot_security.repositories.RoleRepository;
 import ru.kata.spring.boot_security.service.UserDetailsServiceImpl;
 
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ import java.util.ArrayList;
 public class AuthController {
 
     private UserDetailsServiceImpl userService;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public AuthController(UserDetailsServiceImpl userService) {
+    public AuthController(UserDetailsServiceImpl userService, RoleRepository roleRepository) {
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/login")
@@ -60,7 +63,7 @@ public class AuthController {
     @PostMapping("/auth/register_new_user")
     public String addUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         if (user.getRoles().isEmpty()) {
-            user.addRole(new Role("ROLE_USER"));
+            user.addRole(roleRepository.findByName("ROLE_USER"));
         }
         if (bindingResult.hasErrors()) {
             System.out.println("bindingResult.hasErrors() есть ошибки");
