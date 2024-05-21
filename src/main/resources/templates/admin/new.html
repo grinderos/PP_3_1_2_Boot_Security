@@ -7,12 +7,14 @@
 </form><br/>
 <head>
     <meta charset="UTF-8">
-    <title>Редактирование пользователя</title>
+    <title>Добавление пользователя</title>
 </head>
 
 <body>
-<form th:method="POST" th:action="@{/update}" th:object="${user}">
-    <input type="hidden" th:field="*{id}"/>
+<th:block th:each="msg : ${messages}">
+    <h3 th:text="${msg}"></h3>
+</th:block>
+<form th:method="POST" th:action="@{/admin/add}" th:object="${user}">
     <caption><h1>Заполните поля...</h1></caption><br/>
 
     <label for="username">Логин: </label>

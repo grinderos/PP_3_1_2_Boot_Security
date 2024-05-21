@@ -67,7 +67,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public boolean updateWithPass(User user) {
         System.out.println("сохранение пользователя \n" + user);
-        System.out.println("сохранение пользователя \n" + user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;

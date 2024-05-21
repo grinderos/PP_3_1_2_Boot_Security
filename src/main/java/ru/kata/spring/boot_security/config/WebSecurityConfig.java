@@ -22,6 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.successUserHandler = successUserHandler;
     }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
 //                //отключаем защиту от межсайтовой подделки запросов
@@ -35,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .successHandler(successUserHandler)
-                .loginPage("/auth/login")
+                .loginPage("/login")
                 .loginProcessingUrl("/process_login")
                 .failureUrl("/login")
                 .permitAll()

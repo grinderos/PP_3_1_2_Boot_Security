@@ -60,7 +60,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/register_new_user")
-    public String addUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String addUser(@ModelAttribute("user") User user, Model model, BindingResult bindingResult) {
         if (user.getRoles().isEmpty()) {
             user.addRole(roleRepository.findByName("ROLE_USER"));
         }
